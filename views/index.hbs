@@ -1,0 +1,52 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+        <p>Dodaj użytkownika</p>
+        <p>Imie</p>
+        <input id="name" type="text" name="name"/>
+        <p>email</p>
+        <input id="email" type="text" name="email"/>
+        <p>password</p>
+        <input id="pass" type="password" name="pass"/>
+        </br>
+        </br>
+        <button>Wyslij</button>
+
+        <a href="./find">szukaj uzytkownika</a>
+
+</body>
+
+<script>
+
+    document.querySelector('button').addEventListener('click', ()=>{
+        const name = document.querySelector('#name');
+        const email = document.querySelector('#email');
+        const pass = document.querySelector('#pass');
+        formData = new FormData();
+        formData.append('name', name.value);
+        formData.append('email', email.value);
+        formData.append('pass', pass.value);
+
+        name.value = ''
+        email.value = ''
+        pass.value = ''
+
+        let response = fetch('http://localhost:8080/users/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(Object.fromEntries(formData))
+        })
+
+    })
+
+
+</script>
+
+</html>

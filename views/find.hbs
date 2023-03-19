@@ -1,0 +1,89 @@
+
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+        <p>szukaj</p>
+        <p>Imie</p>
+        <input id="name" type="text" name="name"/>
+        <p>email</p>
+        <input id="email" type="text" name="email"/>
+        </br>
+        </br>
+        <button>Wyslij</button>
+
+        <p id="dane"></p>
+
+        <a href="/">szukaj uzytkownika</a>
+
+</body>
+
+<script>
+
+
+    document.querySelector('button').addEventListener('click', async ()=>{
+        const name = document.querySelector('#name');
+        const email = document.querySelector('#email');
+
+        dane.innerHTML = ''
+
+        if(name.value != '' && email.value != '')
+        {
+            let response = fetch('http://localhost:8080/users/' + name.value + '/' + email.value, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response =>(response.json())).
+                then(jsonData =>(dane.innerHTML = jsonData[0].name + '</br>' + jsonData[0].email + '</br>' + jsonData[0].pass)).catch(error =>(console.log(error)))
+        }
+
+        else if(name.value != '')
+        {
+            fetch('http://localhost:8080/users/' + name.value, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response =>(response.json())).
+                then(jsonData =>(dane.innerHTML = jsonData[0].name + '</br>' + jsonData[0].email + '</br>' + jsonData[0].pass)).catch(error =>(console.log(error)))
+        }
+
+        else if(email.value != '')
+        {
+            let response = fetch('http://localhost:8080/users/' + '*?email=' + email.value, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response =>(response.json())).
+                then(jsonData =>(dane.innerHTML = jsonData[0].name + '</br>' + jsonData[0].email + '</br>' + jsonData[0].pass)).catch(error =>(console.log(error)))
+        } 
+
+
+        else 
+        {
+            let response = fetch('http://localhost:8080/users/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response =>(response.json())).
+                then((jsonData) => {
+                    for(x in jsonData)
+                    {
+                        dane.innerHTML += jsonData[x].name + '</br>' + jsonData[x].email + '</br>' + jsonData[x].pass + '</br></br>'
+                    }
+                    })
+        }
+
+    })
+
+
+</script>
+
+</html>
